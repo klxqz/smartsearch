@@ -1,0 +1,72 @@
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.mouse.min.js"></script>
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.slider.min.js"></script>
+<style>
+    .smartsearch input[type="text"]{
+        width: 75px;
+    }
+    .smartsearch .currency_sign{
+        padding-left: 5px;
+    }
+    #slider-range{
+        margin: 10px 0px;
+    }
+</style>
+
+<script>
+    $(function() {
+        var price_min = parseInt('{$price_range.min}');
+        var price_max = parseInt('{$price_range.max}');
+        $("#slider-range").slider({
+            range: true,
+            min: price_min,
+            max: price_max,
+            values: [parseInt('{$price_min}'), parseInt('{$price_max}')],
+            slide: function(event, ui) {
+
+                if (ui.values[0] == price_min) {
+                    $('.smartsearch input[name="price_min"]').val('');
+                } else {
+                    $('.smartsearch input[name="price_min"]').val(ui.values[0]);
+                }
+
+                if (ui.values[1] == price_max) {
+                    $('.smartsearch input[name="price_max"]').val('');
+                } else {
+                    $('.smartsearch input[name="price_max"]').val(ui.values[1]);
+                }
+
+
+            }
+        });
+        if(price_min == $("#slider-range").slider("values", 0)) {
+            $('.smartsearch input[name="price_min"]').val('');
+        } else {
+            $('.smartsearch input[name="price_min"]').val($("#slider-range").slider("values", 0));
+        }
+        
+        if(price_max == $("#slider-range").slider("values", 1)) {
+            $('.smartsearch input[name="price_max"]').val('');
+        } else {
+            $('.smartsearch input[name="price_max"]').val($("#slider-range").slider("values", 1));
+        }
+
+    });
+</script>
+
+<div class="smartsearch">
+    <form>
+        <div>
+            <b>Цена</b>
+            <div>
+                от <input type="text" name="price_min" placeholder="{$price_range.min}" value=""/> 
+                до <input type="text" name="price_max" placeholder="{$price_range.max}" value=""/>
+                <span class="currency_sign">{$currency_sign}</span></div>
+            <div id="slider-range"></div>  
+        </div>
+        <input type="submit" value="ok"/>
+    </form>
+</div>
+
+
+
+
