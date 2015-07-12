@@ -1,72 +1,61 @@
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.mouse.min.js"></script>
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.slider.min.js"></script>
+<link rel="stylesheet" href="{$wa_app_static_url}plugins/smartsearch/css/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="{$wa_app_static_url}plugins/smartsearch/css/themes/{$smartsearch_theme}/jquery.ui.theme.css">
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.core.min.js"></script>
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.widget.min.js"></script>
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.position.min.js"></script>
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.menu.min.js"></script>
+<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.autocomplete.min.js"></script>
+
 <style>
-    .smartsearch input[type="text"]{
-        width: 75px;
+    .ui-autocomplete{
+        width: {if intval($autocomplete_width)} {$autocomplete_width}px {else} auto{/if} !important;
     }
-    .smartsearch .currency_sign{
+    .autocomplete_img{
+        float: left;
+    }
+    .autocomplete_content{
         padding-left: 5px;
+        float: left;
+        width: 300px;
     }
-    #slider-range{
-        margin: 10px 0px;
+    .autocomplete_clear{
+        clear: both
+    }
+    a.autocomplete_link{
+        color: {$autocomplete_text_color} !important;
+    }
+    a.autocomplete_link:hover{
+        color: {$autocomplete_text_color_hover} !important;
+    }
+    .autocomplete_price{
+        color: {$autocomplete_price_color};
+        font-weight: bold;
     }
 </style>
 
 <script>
-    $(function() {
-        var price_min = parseInt('{$price_range.min}');
-        var price_max = parseInt('{$price_range.max}');
-        $("#slider-range").slider({
-            range: true,
-            min: price_min,
-            max: price_max,
-            values: [parseInt('{$price_min}'), parseInt('{$price_max}')],
-            slide: function(event, ui) {
-
-                if (ui.values[0] == price_min) {
-                    $('.smartsearch input[name="price_min"]').val('');
-                } else {
-                    $('.smartsearch input[name="price_min"]').val(ui.values[0]);
+    $(function () {
+        if ($("{$selector}").length > 0) {
+            $("{$selector}").autocomplete({
+                source: "{$wa->getUrl('shop/frontend/autocomplete')}",
+                minLength: parseInt('{$minLength}')
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                var img = '';
+                if (item.img_url) {
+                    img = '<img src="' + item.img_url + '" />';
                 }
-
-                if (ui.values[1] == price_max) {
-                    $('.smartsearch input[name="price_max"]').val('');
-                } else {
-                    $('.smartsearch input[name="price_max"]').val(ui.values[1]);
-                }
-
-
-            }
-        });
-        if(price_min == $("#slider-range").slider("values", 0)) {
-            $('.smartsearch input[name="price_min"]').val('');
-        } else {
-            $('.smartsearch input[name="price_min"]').val($("#slider-range").slider("values", 0));
-        }
-        
-        if(price_max == $("#slider-range").slider("values", 1)) {
-            $('.smartsearch input[name="price_max"]').val('');
-        } else {
-            $('.smartsearch input[name="price_max"]').val($("#slider-range").slider("values", 1));
+                return $("<li>")
+                        .append('<a class="autocomplete_link" href="' + item.frontend_url + '">\
+                             <div class="autocomplete_img">' + img + '</div>\
+                             <div class="autocomplete_content">\
+                                <span class="autocomplete_name">' + item.name + '</span>\
+                                <span class="autocomplete_price">' + item.price_str + '</span>\
+                             </div>\
+                             <br class="autocomplete_clear"/>\
+                             </a>'
+                                ).appendTo(ul);
+            };
         }
 
     });
 </script>
-
-<div class="smartsearch">
-    <form>
-        <div>
-            <b>Цена</b>
-            <div>
-                от <input type="text" name="price_min" placeholder="{$price_range.min}" value=""/> 
-                до <input type="text" name="price_max" placeholder="{$price_range.max}" value=""/>
-                <span class="currency_sign">{$currency_sign}</span></div>
-            <div id="slider-range"></div>  
-        </div>
-        <input type="submit" value="ok"/>
-    </form>
-</div>
-
-
-
-

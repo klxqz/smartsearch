@@ -2,15 +2,13 @@
 
 return array(
     'name' => 'Умный поиск',
-    'description' => 'Список последних добавленных продуктов',
+    'description' => 'Автодополнение при поиске товаров в строке поиска',
     'vendor' => '985310',
     'version' => '1.0.0',
-    'img' => 'img/novelties.png',
+    'img' => 'img/smartsearch.png',
     'shop_settings' => true,
     'frontend' => true,
     'handlers' => array(
-        'frontend_nav' => 'frontendNav',
-        'frontend_category' => 'frontendCategory',
         'frontend_head' => 'frontendHead',
     ),
 );

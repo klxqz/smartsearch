@@ -2,7 +2,7 @@
 
 class shopSmartsearchPluginSettingsAction extends waViewAction {
 
-    protected $tmp_path = 'plugins/smartsearch/templates/Autocomplete.html';
+    protected $tmp_path = 'plugins/smartsearch/templates/Smartsearch.html';
     protected $plugin_id = array('shop', 'smartsearch');
     protected $themes = array(
         'base',

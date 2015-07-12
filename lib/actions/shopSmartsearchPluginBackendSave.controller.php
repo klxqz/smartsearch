@@ -2,7 +2,7 @@
 
 class shopSmartsearchPluginBackendSaveController extends waJsonController {
 
-    protected $tmp_path = 'plugins/smartsearch/templates/Autocomplete.html';
+    protected $tmp_path = 'plugins/smartsearch/templates/Smartsearch.html';
     protected $plugin_id = array('shop', 'smartsearch');
 
     public function execute() {

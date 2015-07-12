@@ -9,18 +9,9 @@
     }
 </style>
 <h1>Умный поиск</h1>
-<div     class="fields form">
+<div class="fields form">
     <form action="?plugin=smartsearch&action=save" method="post" id="plugins-settings-form">
         {$wa->csrf()}
-
-
-        {literal}
-        <p>{shopNovelties::display()} - Код хелпера вывода</p>
-        {/literal}
-        <p class="gray">
-            <i class="icon16 exclamation"></i>
-            Используя этот код Вы можете осуществить вывод "Новинок" в любом месте вашей темы оформления, это позволяет избавиться от привязки к конкретным местам вывода плагина
-        </p>
 
         <div class="field">
             <div class="name">
@@ -31,23 +22,6 @@
                     <option {if $settings.status == 1} selected="selected"{/if} value="1">Включен</option>
                     <option {if $settings.status == 0} selected="selected"{/if} value="0">Выключен</option>
                 </select>
-            </div>
-        </div>
-
-
-        <div class="field">
-            <div class="name">
-                Вывод плагина в стандартном месте
-            </div>
-            <div class="value">
-                <select name="shop_smartsearch[default_output]">
-                    <option {if $settings.default_output == 1} selected="selected"{/if} value="1">Включен</option>
-                    <option {if $settings.default_output == 0} selected="selected"{/if} value="0">Выключен</option>
-                </select>
-                <p class="gray">
-                    <i class="icon16 exclamation"></i>
-                    Вы можете отключить стандартный вывод, это может быть полезно если вы используете хелпер вывода
-                </p>
             </div>
         </div>
 
@@ -63,8 +37,6 @@
                 </select>
             </div>
         </div>
-
-        <h2>Автозаполнение поиска</h2>
 
         <div class="field">
             <div class="name">
