@@ -1,6 +1,6 @@
 <?php
 
-class shopSmartsearchPluginFrontendAutocompleteController extends waJsonController {
+class shopSmartsearchPluginFrontendSmartsearchController extends waJsonController {
 
     protected $plugin_id = array('shop', 'smartsearch');
 

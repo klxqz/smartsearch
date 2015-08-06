@@ -1,10 +1,9 @@
 <link rel="stylesheet" href="{$wa_app_static_url}plugins/smartsearch/css/themes/base/jquery.ui.all.css">
 <link rel="stylesheet" href="{$wa_app_static_url}plugins/smartsearch/css/themes/{$smartsearch_theme}/jquery.ui.theme.css">
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.core.min.js"></script>
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.widget.min.js"></script>
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.position.min.js"></script>
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.menu.min.js"></script>
-<script src="{$wa_app_static_url}plugins/smartsearch/js/ui/jquery.ui.autocomplete.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.position.min.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.autocomplete.min.js"></script>
 
 <style>
     .ui-autocomplete{
@@ -34,28 +33,56 @@
 </style>
 
 <script>
-    $(function () {
-        if ($("{$selector}").length > 0) {
-            $("{$selector}").autocomplete({
-                source: "{$wa->getUrl('shop/frontend/autocomplete')}",
-                minLength: parseInt('{$minLength}')
-            }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                var img = '';
-                if (item.img_url) {
-                    img = '<img src="' + item.img_url + '" />';
-                }
-                return $("<li>")
-                        .append('<a class="autocomplete_link" href="' + item.frontend_url + '">\
-                             <div class="autocomplete_img">' + img + '</div>\
-                             <div class="autocomplete_content">\
-                                <span class="autocomplete_name">' + item.name + '</span>\
-                                <span class="autocomplete_price">' + item.price_str + '</span>\
-                             </div>\
-                             <br class="autocomplete_clear"/>\
-                             </a>'
-                                ).appendTo(ul);
-            };
-        }
-
+    jQuery(function ($) {
+        $(document).ready(function () {
+            if ($("{$selector}").length > 0) {
+                $('{$selector}').autocomplete({
+                    delay: 500,
+                    minLength: parseInt('{$minLength}'),
+                    source: function (request, response) {
+                        request.term = request.term.replace(/^\s+|\s+$/g, '');
+                        var query = request.term.replace(/\s+/g, '+');
+                        $.ajax({
+                            url: '{$wa->getUrl('shop/frontend/smartsearch')}',
+                            data: {
+                                term: query
+                            },
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                var items = $.map(data, function (item) {
+                                    var img = '';
+                                    if (item.img_url) {
+                                        img = '<img src="' + item.img_url + '" />';
+                                    }
+                                    return {
+                                        label: item.name,
+                                        value: item.name,
+                                        url: item.frontend_url,
+                                        text: '<div class="autocomplete_img">' + img + '</div>\
+                                                <div class="autocomplete_content">\
+                                                <span class="autocomplete_name">' + item.name + '</span>\
+                                                <span class="autocomplete_price">' + item.price_str + '</span>\
+                                                </div>\
+                                                <br class="autocomplete_clear"/>'
+                                    }
+                                });
+                                response(items);
+                            }
+                        });
+                    },
+                    select: function (event, ui) {
+                        location.href = ui.item.url;
+                    }
+                }).data("autocomplete")._renderMenu = function (ul, items) {
+                    $.each(items, function (index, item) {
+                        $('<li></li>')
+                                .data('item.autocomplete', item)
+                                .append('<a href="' + item.url + '">' + item.text + '</a>')
+                                .appendTo(ul);
+                    });
+                };
+            }
+        });
     });
 </script>

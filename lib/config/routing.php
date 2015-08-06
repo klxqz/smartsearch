@@ -1,5 +1,5 @@
 <?php
 
 return array(
-    'autocomplete/' => 'frontend/autocomplete',
+    'smartsearch/' => 'frontend/smartsearch',
 );
