@@ -50,24 +50,26 @@
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
-                                var items = $.map(data, function (item) {
-                                    var img = '';
-                                    if (item.img_url) {
-                                        img = '<img src="' + item.img_url + '" />';
-                                    }
-                                    return {
-                                        label: item.name,
-                                        value: item.name,
-                                        url: item.frontend_url,
-                                        text: '<div class="autocomplete_img">' + img + '</div>\
+                                if (data.status == 'ok') {
+                                    var items = $.map(data.data, function (item) {
+                                        var img = '';
+                                        if (item.img_url) {
+                                            img = '<img src="' + item.img_url + '" />';
+                                        }
+                                        return {
+                                            label: item.name,
+                                            value: item.name,
+                                            url: item.frontend_url,
+                                            text: '<div class="autocomplete_img">' + img + '</div>\
                                                 <div class="autocomplete_content">\
                                                 <span class="autocomplete_name">' + item.name + '</span>\
                                                 <span class="autocomplete_price">' + item.price_str + '</span>\
                                                 </div>\
                                                 <br class="autocomplete_clear"/>'
-                                    }
-                                });
-                                response(items);
+                                        }
+                                    });
+                                    response(items);
+                                }
                             }
                         });
                     },

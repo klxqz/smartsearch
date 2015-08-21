@@ -23,7 +23,7 @@ class shopSmartsearchPluginFrontendSmartsearchController extends waJsonControlle
             array_push($result, $product);
         }
 
-        exit(json_encode($result));
+        $this->response = $result;
     }
 
 }
