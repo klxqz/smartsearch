@@ -16,7 +16,10 @@ class shopSmartsearchPlugin extends shopPlugin {
         $view->assign('autocomplete_text_color_hover', $this->getSettings('autocomplete_text_color_hover'));
 
         $view->assign('autocomplete_price_color', $this->getSettings('price_color'));
-        $template_path = wa()->getAppPath('plugins/smartsearch/templates/Smartsearch.html', 'shop');
+        $template_path = wa()->getDataPath('plugins/smartsearch/templates/Smartsearch.html', false, 'shop', true);
+        if (!file_exists($template_path)) {
+            $template_path = wa()->getAppPath('plugins/smartsearch/templates/Smartsearch.html', 'shop');
+        } 
         $html = $view->fetch($template_path);
         return $html;
     }
