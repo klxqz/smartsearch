@@ -17,9 +17,10 @@ class shopSmartsearchPluginFrontendSmartsearchController extends waJsonControlle
             $product['value'] = $product['name'];
             $product['price_str'] = shop_currency($product['price']);
             $product['img_url'] = $product['image_id'] ? shopImage::getUrl(array(
+                        'id'         => $product['image_id'],
                         'product_id' => $product['id'],
-                        'id' => $product['image_id'],
-                        'ext' => $product['ext']), $size) : '';
+                        'filename'   => $product['image_filename'],
+                        'ext'        => $product['ext']), $size) : '';
             array_push($result, $product);
         }
 
